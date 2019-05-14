@@ -82,6 +82,7 @@ namespace ImageCompare.Classes.Skills
 
                                 Console.WriteLine("F button found");
                                 Console.WriteLine(results.First().Similarity.ToString());
+                                SaveFoundArea(screenData , results.First());
                             }
                         }
                     }
@@ -92,6 +93,8 @@ namespace ImageCompare.Classes.Skills
                             var results = this.tm.ProcessImage(screenData , this.FButton);
                             if (results != null && results.Length > 0)
                             {
+                                Console.WriteLine("F button found in previous loc");
+
                                 DxInput.SendKey(Interceptor.Keys.F);
                                 this.state = GameState.Fishing;
                             }

@@ -55,7 +55,7 @@ namespace ImageCompare.Classes.Skills
 
         public static UnmanagedImage GrabScreen(int StartX , int StartY , int Width , int Height , bool save)
         {
-            return GrabScreen(StartX , StartY , Width , Height , save , PixelFormat.Format8bppIndexed);
+            return GrabScreen(StartX , StartY , Width , Height , save , PixelFormat.Format24bppRgb);
         }
 
         public static UnmanagedImage GrabScreen(int StartX, int StartY, int Width, int Height, bool save, PixelFormat format)
