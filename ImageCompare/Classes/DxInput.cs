@@ -43,7 +43,6 @@ namespace ImageCompare.Classes
             {
                 input.Load();
                 input.OnKeyPressed += Input_OnKeyPressed;
-                input.OnMousePressed += Input_OnMousePressed;
             }
             catch ( Exception ex )
             {
@@ -83,11 +82,6 @@ namespace ImageCompare.Classes
                     Environment.Exit(-3);
                 }
             }
-        }
-
-        private static void Input_OnMousePressed(object sender, MousePressedEventArgs e)
-        {
-            Console.WriteLine($"Mouse {e.X} {e.Y}");
         }
 
         private static void Input_OnKeyPressed(object sender , KeyPressedEventArgs e)

@@ -26,9 +26,7 @@ namespace ImageCompare.Classes
             {
                 if (!Program.paused)
                 {
-                    break;
-
-                    IntPtr desktopPtr = GetDC(IntPtr.Zero);
+                    var desktopPtr = GetDC(IntPtr.Zero);
                     var g = Graphics.FromHdc(desktopPtr);
 
                     try
