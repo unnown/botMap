@@ -13,16 +13,11 @@ namespace ImageCompare.Classes.Skills
 {
     public class Builder : BaseSkill
     {
-        // N
-        // click "yes"
-        // B
-        // loop
-        //      space
-        //      right
-
+       
         private ExhaustiveTemplateMatching tm = null;
         private GameState state = GameState.GoHome;
         private Random rand = new Random();
+        private int count = 0;
 
         public enum GameState
         {
@@ -31,7 +26,9 @@ namespace ImageCompare.Classes.Skills
             Confirm,
             BuildMode,
             Loop1,
-            Loop2
+            Loop2,
+            Exit,
+            ConfirmStop
         }
 
         public Builder()
@@ -81,7 +78,29 @@ namespace ImageCompare.Classes.Skills
                     DxInput.input.SendMouseEvent(Interceptor.MouseState.RightDown);
                     Thread.Sleep(rand.Next(10, 20));
                     DxInput.input.SendMouseEvent(Interceptor.MouseState.RightUp);
-                    this.state = GameState.Loop1;
+
+                    count += 1;
+                    if (count >= 80)
+                    {
+                        this.state = GameState.Exit;
+                    }
+                    else
+                    {
+                        this.state = GameState.Loop1;
+                    }                    
+                    break;
+
+                case GameState.Exit:
+                    Console.WriteLine("Ending home command");
+                    DxInput.SendKey(Interceptor.Keys.N);
+                    this.state = GameState.ConfirmStop;
+                    Thread.Sleep(200);
+                    break;
+
+                case GameState.ConfirmStop:
+                    DxInput.SendKey(Interceptor.Keys.Enter);
+                    Program.paused = true;
+                    Program.askMode();
                     break;
             }
         }

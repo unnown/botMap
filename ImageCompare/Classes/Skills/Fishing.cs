@@ -71,7 +71,7 @@ namespace ImageCompare.Classes.Skills
                     Console.WriteLine("Looking for fish button in location");
                     if ( this.buttonLoc == null && !this.buttonLoc.HasValue )
                     {                        
-                        using ( var screenData = GrabScreen(this.startX , this.startY , this.imgWidth , this.imgHeight) )
+                        using ( var screenData = GrabScreen(this.startX , this.startY , this.imgWidth , this.imgHeight, true) )
                         {
                             var results = this.tm.ProcessImage(screenData , this.FButton);
                             if ( results != null && results.Length > 0 )
@@ -91,9 +91,9 @@ namespace ImageCompare.Classes.Skills
                         using ( var screenData = GrabScreen(this.buttonLoc.Value.Left , this.buttonLoc.Value.Top , this.FButton.Width , this.FButton.Height) )
                         {
                             var results = this.tm.ProcessImage(screenData , this.FButton);
-                            if (results != null && results.Length > 0)
+                            if (results != null && results.Length > 0 && results.First().Similarity >= 0.70)
                             {
-                                Console.WriteLine("F button found in previous loc");
+                                Console.WriteLine($"F button found in previous loc");
 
                                 DxInput.SendKey(Interceptor.Keys.F);
                                 this.state = GameState.Fishing;
@@ -108,7 +108,7 @@ namespace ImageCompare.Classes.Skills
                     using ( var screenData = GrabScreen(this.buttonLoc.Value.Left , this.buttonLoc.Value.Top , this.FButton.Width , this.FButton.Height) )
                     {
                         var results = this.tm.ProcessImage(screenData , this.FButton);
-                        if ( results != null && results.Length > 0)
+                        if ( results != null && results.Length > 0 && results.First().Similarity >= 0.70)
                         {
                             Console.WriteLine("");
                             Console.WriteLine("Catching new fish");
@@ -116,28 +116,31 @@ namespace ImageCompare.Classes.Skills
                         }
                     }
 
-                    using ( var screenData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height , this.bobber_rect.Width , this.bobber_rect.Height, false, PixelFormat.Format24bppRgb) )
+                    using ( var screenData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height , this.bobber_rect.Width , this.bobber_rect.Height) )
                     {
                         var results = this.tm.ProcessImage(screenData , this.bobber);
                         if ( results != null && results.Length > 0 && results.First().Similarity >= 0.80)
                         {
                             Console.WriteLine($"Bobber found! {results.First().Similarity}");
-                            SaveFoundArea(screenData , results.First());
-                            bobber.ToManagedImage().Save($"bobber{DateTime.Now.ToString().Replace("/" , "").Replace(":" , "")}.bmp");
+                            SaveFoundArea(screenData , results.First());                            
 
                             results = null;
                             var bobberFound = false;
                             var buttonFound = false;
-                            while ( results == null || results.Length == 0 )
+                            var bobberTimer = DateTime.Now;
+                            while (!Program.paused && (results == null || results.Length == 0 ))
                             {
-                                using (var screenBobberData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height, this.bobber_rect.Width, this.bobber_rect.Height , false , PixelFormat.Format24bppRgb) )
+                                if (bobberTimer.AddSeconds(10) < DateTime.Now)
+                                {
+                                    break;
+                                }
+
+                                using (var screenBobberData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height, this.bobber_rect.Width, this.bobber_rect.Height) )
                                 {
                                     var redBobber = this.tm.ProcessImage(screenData, this.bobber);
                                     if (redBobber != null && redBobber.Length > 0 && redBobber.First().Similarity >= 0.79)
                                     {
                                         SaveFoundArea(screenBobberData , redBobber.First());
-                                        bobber.ToManagedImage().Save($"bobber{DateTime.Now.ToString().Replace("/" , "").Replace(":" , "")}.bmp");
-
                                         Console.WriteLine($"Bobber found! {redBobber.First().Similarity}");
                                         bobberFound = true;
                                     }
@@ -156,7 +159,7 @@ namespace ImageCompare.Classes.Skills
                                 using ( var screenFData = GrabScreen(this.buttonLoc.Value.Left , this.buttonLoc.Value.Top , this.FButton.Width , this.FButton.Height) )
                                 {
                                     results = this.tm.ProcessImage(screenFData , this.FButton);
-                                    if ( results.First().Similarity < 0.80 )
+                                    if ( results.First().Similarity < 0.70 )
                                     {
                                         results = null;
                                         buttonFound = false;

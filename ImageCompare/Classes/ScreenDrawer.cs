@@ -15,7 +15,7 @@ namespace ImageCompare.Classes
         [DllImport("User32.dll")]
         public static extern void ReleaseDC(IntPtr hwnd , IntPtr dc);
 
-        private static System.Drawing.Font font = new System.Drawing.Font("Arial" , 20);
+        private static System.Drawing.Font font = new System.Drawing.Font("Arial" , 16);
         private static System.Drawing.SolidBrush brush = new System.Drawing.SolidBrush(System.Drawing.Color.White);
 
         private static List<String> lines = new List<string>();
@@ -36,8 +36,7 @@ namespace ImageCompare.Classes
                         {
                             foreach (var line in lines)
                             {
-                                var b = new SolidBrush(Color.White);
-                                g.DrawString(line, font, brush, new PointF(100, 50 + (20 * count)));
+                                g.DrawString(line, font, brush, new PointF(20, 50 + (18 * count)));
                                 count += 1;
                             }
                         }
@@ -54,11 +53,17 @@ namespace ImageCompare.Classes
         {
             lock (lines)
             {
+                if (lines != null && lines.Count > 0 && lines.Last() == text)
+                {
+                    return;
+                }
+
                 if (!append)
                 {
                     lines = new List<string>();
                 }
                 lines.Add(text);
+                
             }
         }
     }

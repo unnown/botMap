@@ -1,3 +1,4 @@
 obj
-/ImageCompare/bin
-/packages
+bin
+packages
+.vs

@@ -9,6 +9,7 @@
 namespace AForge
 {
     using System;
+    using System.Runtime.ExceptionServices;
     using System.Runtime.InteropServices;
 
     /// <summary>
@@ -59,6 +60,7 @@ namespace AForge
         /// not provide any way to copy unmanaged blocks, but provides only methods to
         /// copy from unmanaged memory to managed memory and vise versa.</para></remarks>
         /// 
+        [HandleProcessCorruptedStateExceptions]
         public static unsafe byte* CopyUnmanagedMemory( byte* dst, byte* src, int count )
         {
 #if !MONO

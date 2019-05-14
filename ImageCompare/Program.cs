@@ -41,16 +41,7 @@ namespace ImageCompare
             var sw = new Stopwatch();
 
             Console.Title = $"Max concurrent threads {maxThreads}";
-            Console.WriteLine("Which mode?");
-            Console.WriteLine("");
-            Console.WriteLine("1. Fishing");
-            Console.WriteLine("2. Mining");
-            Console.WriteLine("3. Builder");
-            Console.WriteLine("");
-
-            var confirm = Console.ReadKey();
-            Console.Clear();
-            setMode(confirm.KeyChar.ToString());
+            askMode();
 
             running = true;            
             new Task(() => { ScreenDrawer.printDebug(); }).Start();
@@ -104,6 +95,20 @@ namespace ImageCompare
                 }
             }
             return false;
+        }
+
+        public static void askMode()
+        {
+            Console.WriteLine("Which mode?");
+            Console.WriteLine("");
+            Console.WriteLine("1. Fishing");
+            Console.WriteLine("2. Mining");
+            Console.WriteLine("3. Builder");
+            Console.WriteLine("");
+
+            var confirm = Console.ReadKey();
+            Console.Clear();
+            setMode(confirm.KeyChar.ToString());
         }
 
         public static void setMode(string KeyChar)
