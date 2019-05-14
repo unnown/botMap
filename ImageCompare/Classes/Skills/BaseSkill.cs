@@ -35,7 +35,12 @@ namespace ImageCompare.Classes.Skills
             return GrabScreen(StartX, StartY, Width, Height, should);            
         }
 
-        public static UnmanagedImage GrabScreen(int StartX, int StartY, int Width, int Height, bool save)
+        public static UnmanagedImage GrabScreen(int StartX , int StartY , int Width , int Height , bool save)
+        {
+            return GrabScreen(StartX , StartY , Width , Height , save , PixelFormat.Format8bppIndexed);
+        }
+
+        public static UnmanagedImage GrabScreen(int StartX, int StartY, int Width, int Height, bool save, PixelFormat format)
         {
             var bmpScreenshot = new Bitmap(Width , Height , PixelFormat.Format24bppRgb);
             var gfxScreenshot = Graphics.FromImage(bmpScreenshot);
@@ -51,7 +56,12 @@ namespace ImageCompare.Classes.Skills
             {
                 bmpScreenshot.Save($"Screenshot{DateTime.Now.Ticks}.bmp");
             }
-            var baseTemplate = ConvertBitmap(bmpScreenshot);
+
+            var baseTemplate = bmpScreenshot;
+            if ( format != PixelFormat.Format24bppRgb )
+            {
+                baseTemplate = ConvertBitmap(bmpScreenshot);
+            }
             var basetemplateData = baseTemplate.LockBits(new Rectangle(0 , 0 , baseTemplate.Width , baseTemplate.Height) , ImageLockMode.ReadOnly , baseTemplate.PixelFormat);
             UnmanagedImage unmamagedBase = null;
 

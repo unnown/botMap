@@ -54,6 +54,7 @@
     <Compile Include="Classes\Directions\AStar\Node.cs" />
     <Compile Include="Classes\Directions\AStar\PathFinder.cs" />
     <Compile Include="Classes\Directions\AStar\Point.cs" />
+    <Compile Include="Classes\Console.cs" />
     <Compile Include="Classes\ScreenDrawer.cs" />
     <Compile Include="Classes\Skills\BaseSkill.cs" />
     <Compile Include="Classes\DxInput.cs" />

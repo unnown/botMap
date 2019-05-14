@@ -46,6 +46,7 @@ namespace ImageCompare.Classes.Skills
             Console.WriteLine("Use Lure?");
             var confirm = Console.ReadKey();
             this.useLure = ( confirm.KeyChar == 'y' );
+
             Console.Clear();
         }
 
@@ -60,8 +61,7 @@ namespace ImageCompare.Classes.Skills
             switch ( this.state )
             {
                 case GameState.UseLure:
-                    DxInput.input.KeyPressDelay = this.rand.Next(10 , 20);
-                    DxInput.input.SendKey(Interceptor.Keys.Six);
+                    DxInput.SendKey(Interceptor.Keys.Six);
 
                     this.lastLureTick = DateTime.Now.AddHours(3).Ticks;
                     this.state = GameState.StartFish;
@@ -76,11 +76,12 @@ namespace ImageCompare.Classes.Skills
                             var results = this.tm.ProcessImage(screenData , this.FButton);
                             if ( results != null && results.Length > 0 )
                             {
-                                this.buttonLoc = new Rectangle(this.startX + results.First().Rectangle.Left, this.startY + results.First().Rectangle.Top, 0, 0);
-                                Console.WriteLine("F button found");
+                                this.buttonLoc = new Rectangle(this.startX + results.First().Rectangle.Left, this.startY + results.First().Rectangle.Top, 0, 0);                                
                                 DxInput.SendKey(Interceptor.Keys.F);
                                 this.state = GameState.Fishing;
-                                Console.WriteLine(results.First().Similarity);
+
+                                Console.WriteLine("F button found");
+                                Console.WriteLine(results.First().Similarity.ToString());
                             }
                         }
                     }
@@ -105,41 +106,38 @@ namespace ImageCompare.Classes.Skills
                         var results = this.tm.ProcessImage(screenData , this.FButton);
                         if ( results != null && results.Length > 0)
                         {
-                            ScreenDrawer.drawText($"");
                             Console.WriteLine("");
                             Console.WriteLine("Catching new fish");
                             this.state = GameState.StartFish;
                         }
                     }
 
-                    using ( var screenData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height , this.bobber_rect.Width , this.bobber_rect.Height) )
+                    using ( var screenData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height , this.bobber_rect.Width , this.bobber_rect.Height, false, PixelFormat.Format24bppRgb) )
                     {
                         var results = this.tm.ProcessImage(screenData , this.bobber);
                         if ( results != null && results.Length > 0 && results.First().Similarity >= 0.80)
                         {
                             Console.WriteLine($"Bobber found! {results.First().Similarity}");
-                            ScreenDrawer.drawText($"Bobber found! {results.First().Similarity}");
 
                             results = null;
                             var bobberFound = false;
                             var buttonFound = false;
                             while ( results == null || results.Length == 0 )
                             {
-                                using (var screenBobberData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height, this.bobber_rect.Width, this.bobber_rect.Height, true))
+                                using (var screenBobberData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height, this.bobber_rect.Width, this.bobber_rect.Height , true , PixelFormat.Format24bppRgb) )
                                 {
-                                    //TODO search for blue color in bobber indicator...
                                     var redBobber = this.tm.ProcessImage(screenData, this.bobber);
                                     if (redBobber != null && redBobber.Length > 0 && redBobber.First().Similarity >= 0.79)
                                     {
                                         // No action? might need to up?
-                                        ScreenDrawer.drawText($"Bobber found! {redBobber.First().Similarity}", true);
+                                        Console.WriteLine($"Bobber found! {redBobber.First().Similarity}");
                                         bobberFound = true;
                                     }
                                     else
                                     {
                                         if ( !bobberFound )
                                         {
-                                            ScreenDrawer.drawText($"Spam F!" , true);
+                                            Console.WriteLine($"Spam F!" );
                                             DxInput.SendKey(Interceptor.Keys.F);
                                             Thread.Sleep(250);
                                         }
@@ -160,7 +158,6 @@ namespace ImageCompare.Classes.Skills
                                         if ( buttonFound )
                                         {
                                             Console.WriteLine($"Found F {results.First().Similarity}");
-                                            ScreenDrawer.drawText($"Found F {results.First().Similarity}" , true);
                                         } else {
                                             buttonFound = true;
                                             results = null;
