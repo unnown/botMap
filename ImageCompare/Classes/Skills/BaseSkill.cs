@@ -28,6 +28,24 @@ namespace ImageCompare.Classes.Skills
             Builder = 3
         }
 
+        public static void SaveFoundArea(UnmanagedImage image, TemplateMatch match)
+        {
+            var img = image.ToManagedImage();
+            if (img.PixelFormat == PixelFormat.Format8bppIndexed)
+            {
+                return;
+            }
+
+            using ( var graphics = Graphics.FromImage(img) )
+            {
+                using ( var myPen = new System.Drawing.Pen(System.Drawing.Color.Red, 2) )
+                {
+                    graphics.DrawRectangle(myPen , match.Rectangle);
+                }
+                img.Save($"pos_{match.Similarity}.bmp");
+            }
+        }
+
         public static UnmanagedImage GrabScreen(int StartX, int StartY, int Width, int Height)
         {
             var should = Program.scheduleScreenshot;
@@ -78,10 +96,10 @@ namespace ImageCompare.Classes.Skills
             return unmamagedBase;
         }
 
-        private static Bitmap ConvertBitmap(Bitmap source)
+        private static Bitmap ConvertBitmap(Bitmap source, PixelFormat format = PixelFormat.Format8bppIndexed)
         {
             var bmData = source.LockBits(new Rectangle(0 , 0 , source.Width , source.Height) , ImageLockMode.ReadWrite , source.PixelFormat);
-            var temp = new Bitmap(bmData.Width , bmData.Height , bmData.Stride , PixelFormat.Format8bppIndexed , bmData.Scan0);
+            var temp = new Bitmap(bmData.Width , bmData.Height , bmData.Stride , format , bmData.Scan0);
             source.UnlockBits(bmData);
 
             return temp;

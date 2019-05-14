@@ -14,7 +14,7 @@ namespace ImageCompare.Classes.Skills
     public class Fishing : BaseSkill
     {
         private readonly UnmanagedImage FButton = BaseSkill.ParseImage(@"img/press_f.png");
-        private readonly UnmanagedImage bobber = BaseSkill.ParseImage(@"img/redBobber.png");
+        private UnmanagedImage bobber = BaseSkill.ParseImage(@"img/redBobber.png");
         private ExhaustiveTemplateMatching tm = null;
 
         public Size bobber_rect = new Size();
@@ -45,7 +45,7 @@ namespace ImageCompare.Classes.Skills
 
             Console.WriteLine("Use Lure?");
             var confirm = Console.ReadKey();
-            this.useLure = ( confirm.KeyChar == 'y' );
+            this.useLure = ( confirm.KeyChar == 'y' );            
 
             Console.Clear();
         }
@@ -100,6 +100,7 @@ namespace ImageCompare.Classes.Skills
                     break;
 
                 case GameState.Fishing:
+                    this.bobber = BaseSkill.ParseImage(@"img/redBobber.png"); // Reload bobber image due to memory corruption... 
 
                     using ( var screenData = GrabScreen(this.buttonLoc.Value.Left , this.buttonLoc.Value.Top , this.FButton.Width , this.FButton.Height) )
                     {
@@ -118,18 +119,22 @@ namespace ImageCompare.Classes.Skills
                         if ( results != null && results.Length > 0 && results.First().Similarity >= 0.80)
                         {
                             Console.WriteLine($"Bobber found! {results.First().Similarity}");
+                            SaveFoundArea(screenData , results.First());
+                            bobber.ToManagedImage().Save($"bobber{DateTime.Now.ToString().Replace("/" , "").Replace(":" , "")}.bmp");
 
                             results = null;
                             var bobberFound = false;
                             var buttonFound = false;
                             while ( results == null || results.Length == 0 )
                             {
-                                using (var screenBobberData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height, this.bobber_rect.Width, this.bobber_rect.Height , true , PixelFormat.Format24bppRgb) )
+                                using (var screenBobberData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height, this.bobber_rect.Width, this.bobber_rect.Height , false , PixelFormat.Format24bppRgb) )
                                 {
                                     var redBobber = this.tm.ProcessImage(screenData, this.bobber);
                                     if (redBobber != null && redBobber.Length > 0 && redBobber.First().Similarity >= 0.79)
                                     {
-                                        // No action? might need to up?
+                                        SaveFoundArea(screenBobberData , redBobber.First());
+                                        bobber.ToManagedImage().Save($"bobber{DateTime.Now.ToString().Replace("/" , "").Replace(":" , "")}.bmp");
+
                                         Console.WriteLine($"Bobber found! {redBobber.First().Similarity}");
                                         bobberFound = true;
                                     }
