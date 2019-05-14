@@ -82,7 +82,6 @@ namespace ImageCompare.Classes.Skills
 
                                 Console.WriteLine("F button found");
                                 Console.WriteLine(results.First().Similarity.ToString());
-                                SaveFoundArea(screenData , results.First());
                             }
                         }
                     }
@@ -93,7 +92,7 @@ namespace ImageCompare.Classes.Skills
                             var results = this.tm.ProcessImage(screenData , this.FButton);
                             if (results != null && results.Length > 0 && results.First().Similarity >= 0.70)
                             {
-                                Console.WriteLine($"F button found in previous loc");
+                                Console.WriteLine($"F button found in previous loc {results.First().Similarity}");
 
                                 DxInput.SendKey(Interceptor.Keys.F);
                                 this.state = GameState.Fishing;
@@ -122,7 +121,7 @@ namespace ImageCompare.Classes.Skills
                         if ( results != null && results.Length > 0 && results.First().Similarity >= 0.80)
                         {
                             Console.WriteLine($"Bobber found! {results.First().Similarity}");
-                            SaveFoundArea(screenData , results.First());                            
+                            //SaveFoundArea(screenData , results.First());                            
 
                             results = null;
                             var bobberFound = false;
@@ -140,7 +139,7 @@ namespace ImageCompare.Classes.Skills
                                     var redBobber = this.tm.ProcessImage(screenData, this.bobber);
                                     if (redBobber != null && redBobber.Length > 0 && redBobber.First().Similarity >= 0.79)
                                     {
-                                        SaveFoundArea(screenBobberData , redBobber.First());
+                                        //SaveFoundArea(screenBobberData , redBobber.First());
                                         Console.WriteLine($"Bobber found! {redBobber.First().Similarity}");
                                         bobberFound = true;
                                     }
