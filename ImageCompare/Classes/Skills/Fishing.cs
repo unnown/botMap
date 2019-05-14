@@ -112,12 +112,6 @@ namespace ImageCompare.Classes.Skills
                         }
                     }
 
-                    //if ( this.lastFTick + 400 < DateTime.Now.Ticks )
-                    //{
-                    //    this.lastFTick = DateTime.Now.Ticks;
-                    //    DxInput.SendKey(Interceptor.Keys.F);
-                    //}
-
                     using ( var screenData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height , this.bobber_rect.Width , this.bobber_rect.Height) )
                     {
                         var results = this.tm.ProcessImage(screenData , this.bobber);
@@ -127,6 +121,8 @@ namespace ImageCompare.Classes.Skills
                             ScreenDrawer.drawText($"Bobber found! {results.First().Similarity}");
 
                             results = null;
+                            var bobberFound = false;
+                            var buttonFound = false;
                             while ( results == null || results.Length == 0 )
                             {
                                 using (var screenBobberData = GrabScreen(this.startX - (this.imgWidth / 5), this.startY + this.bobber_rect.Height, this.bobber_rect.Width, this.bobber_rect.Height, true))
@@ -137,28 +133,39 @@ namespace ImageCompare.Classes.Skills
                                     {
                                         // No action? might need to up?
                                         ScreenDrawer.drawText($"Bobber found! {redBobber.First().Similarity}", true);
+                                        bobberFound = true;
                                     }
                                     else
                                     {
-                                        ScreenDrawer.drawText($"Spam F!", true);
-
-                                        DxInput.SendKey(Interceptor.Keys.F);
-                                        Thread.Sleep(250);
+                                        if ( !bobberFound )
+                                        {
+                                            ScreenDrawer.drawText($"Spam F!" , true);
+                                            DxInput.SendKey(Interceptor.Keys.F);
+                                            Thread.Sleep(250);
+                                        }
+                                        bobberFound = false;
                                     }
                                 }
 
                                 using ( var screenFData = GrabScreen(this.buttonLoc.Value.Left , this.buttonLoc.Value.Top , this.FButton.Width , this.FButton.Height) )
                                 {
                                     results = this.tm.ProcessImage(screenFData , this.FButton);
-                                    // TODO!
-                                    //if (results.First().Similarity < 0.80)
-                                    //{
-                                    //    results = null;
-                                    //} else {
-                                    //    Console.WriteLine($"Found F {results.First().Similarity}");
-                                    //    ScreenDrawer.drawText($"Found F {results.First().Similarity}", true);
-                                    //}
-
+                                    if ( results.First().Similarity < 0.80 )
+                                    {
+                                        results = null;
+                                        buttonFound = false;
+                                    }
+                                    else
+                                    {
+                                        if ( buttonFound )
+                                        {
+                                            Console.WriteLine($"Found F {results.First().Similarity}");
+                                            ScreenDrawer.drawText($"Found F {results.First().Similarity}" , true);
+                                        } else {
+                                            buttonFound = true;
+                                            results = null;
+                                        }
+                                    }
                                 }
                             }
 
