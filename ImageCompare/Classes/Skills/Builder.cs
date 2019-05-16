@@ -18,6 +18,7 @@ namespace ImageCompare.Classes.Skills
         private GameState state = GameState.GoHome;
         private Random rand = new Random();
         private int count = 0;
+        private int buildCount = 120;
 
         public enum GameState
         {
@@ -80,7 +81,7 @@ namespace ImageCompare.Classes.Skills
                     DxInput.input.SendMouseEvent(Interceptor.MouseState.RightUp);
 
                     count += 1;
-                    if (count >= 80)
+                    if (count >= buildCount)
                     {
                         this.state = GameState.Exit;
                     }

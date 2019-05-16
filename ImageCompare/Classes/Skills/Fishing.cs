@@ -158,19 +158,21 @@ namespace ImageCompare.Classes.Skills
                                 using ( var screenFData = GrabScreen(this.buttonLoc.Value.Left , this.buttonLoc.Value.Top , this.FButton.Width , this.FButton.Height) )
                                 {
                                     results = this.tm.ProcessImage(screenFData , this.FButton);
-                                    if ( results.First().Similarity < 0.70 )
-                                    {
-                                        results = null;
-                                        buttonFound = false;
-                                    }
-                                    else
-                                    {
-                                        if ( buttonFound )
+                                    if (results != null && results.Length > 0) {
+                                        if (results.First().Similarity < 0.70)
                                         {
-                                            Console.WriteLine($"Found F {results.First().Similarity}");
-                                        } else {
-                                            buttonFound = true;
                                             results = null;
+                                            buttonFound = false;
+                                        }
+                                        else
+                                        {
+                                            if (buttonFound)
+                                            {
+                                                Console.WriteLine($"Found F {results.First().Similarity}");
+                                            } else {
+                                                buttonFound = true;
+                                                results = null;
+                                            }
                                         }
                                     }
                                 }
