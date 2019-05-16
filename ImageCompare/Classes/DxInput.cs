@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 namespace ImageCompare.Classes
 {
+    //test commit
     public static class DxInput
     {
         private static readonly Random rand = new Random();
