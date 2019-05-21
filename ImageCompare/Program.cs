@@ -104,6 +104,7 @@ namespace ImageCompare
             Console.WriteLine("1. Fishing");
             Console.WriteLine("2. Mining");
             Console.WriteLine("3. Builder");
+            Console.WriteLine("4. Auto");
             Console.WriteLine("");
 
             var confirm = Console.ReadKey();
@@ -127,6 +128,11 @@ namespace ImageCompare
             {
                 mode = BaseSkill.Mode.Builder;
                 currSkill = new Builder();
+            }
+            else if (KeyChar == "4")
+            {
+                mode = BaseSkill.Mode.Auto;
+                currSkill = new Auto();
             }
             else
             {

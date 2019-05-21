@@ -25,7 +25,8 @@ namespace ImageCompare.Classes.Skills
             None = 0,
             Fishing = 1,
             Mining = 2,
-            Builder = 3
+            Builder = 3,
+            Auto = 4
         }
 
         public static void SaveFoundArea(UnmanagedImage image, TemplateMatch match)

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -34,8 +35,13 @@ namespace ImageCompare.Classes
 
         public static void SendKey(Interceptor.Keys key)
         {
-            DxInput.input.KeyPressDelay = rand.Next(10 , 20);
+            DxInput.input.KeyPressDelay = rand.Next(10, 20);
             DxInput.input.SendKey(key);
+        }
+        public static void SendMouseEvent(Interceptor.MouseState key)
+        {
+            Thread.Sleep(rand.Next(10, 20));
+            DxInput.input.SendMouseEvent(Interceptor.MouseState.RightExtraDown);
         }
 
         public static void initInput()

@@ -49,6 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Button\BaseButton.cs" />
+    <Compile Include="Classes\Button\KeyButton.cs" />
+    <Compile Include="Classes\Button\MouseButton.cs" />
+    <Compile Include="Classes\Config.cs" />
     <Compile Include="Classes\Directions\AStar\Edge.cs" />
     <Compile Include="Classes\Directions\AStar\Map.cs" />
     <Compile Include="Classes\Directions\AStar\Node.cs" />
@@ -59,6 +63,7 @@
     <Compile Include="Classes\Skills\BaseSkill.cs" />
     <Compile Include="Classes\DxInput.cs" />
     <Compile Include="Classes\Skills\Builder.cs" />
+    <Compile Include="Classes\Skills\Auto.cs" />
     <Compile Include="Classes\Skills\Fishing.cs" />
     <Compile Include="Classes\Skills\Mining.cs" />
     <Compile Include="Program.cs" />
