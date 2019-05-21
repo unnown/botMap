@@ -76,6 +76,7 @@ namespace ImageCompare.Classes.Skills
 
                 case GameState.Loop2:
                     Thread.Sleep(200);
+                    var test = Program.config.actions[ButtonAction.RightClick];
                     Program.config.actions[ButtonAction.RightClick].DownAction();                    
                     Thread.Sleep(rand.Next(10, 20));
                     Program.config.actions[ButtonAction.RightClick].UpAction();

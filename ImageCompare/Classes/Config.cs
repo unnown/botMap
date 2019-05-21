@@ -21,7 +21,7 @@ namespace ImageCompare.Classes
         RightClick = 8,     // Mouse rightclick
 
         LureItem = 9,       // Use lure item 6
-        ActionBtn = 10,          // Fish f
+        ActionBtn = 10,     // Fish f
     }
 
     public class Config

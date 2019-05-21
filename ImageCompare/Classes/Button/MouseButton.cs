@@ -12,14 +12,14 @@ namespace ImageCompare.Classes.Button
 
         private Interceptor.MouseState? btnUp = null;
 
-        public virtual void DownAction() {
+        public override void DownAction() {
             if (btnDown.HasValue)
             {
                 DxInput.SendMouseEvent(btnDown.Value);
             }
         }
 
-        public virtual void UpAction() {
+        public override void UpAction() {
             if (btnUp.HasValue)
             {
                 DxInput.SendMouseEvent(btnUp.Value);
