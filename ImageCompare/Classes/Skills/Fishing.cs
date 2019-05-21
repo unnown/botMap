@@ -61,7 +61,7 @@ namespace ImageCompare.Classes.Skills
             switch ( this.state )
             {
                 case GameState.UseLure:
-                    DxInput.SendKey(Interceptor.Keys.Six);
+                    Program.config.actions[ButtonAction.LureItem].TakeActions();
 
                     this.lastLureTick = DateTime.Now.AddHours(3).Ticks;
                     this.state = GameState.StartFish;
@@ -76,8 +76,8 @@ namespace ImageCompare.Classes.Skills
                             var results = this.tm.ProcessImage(screenData , this.FButton);
                             if ( results != null && results.Length > 0 )
                             {
-                                this.buttonLoc = new Rectangle(this.startX + results.First().Rectangle.Left, this.startY + results.First().Rectangle.Top, 0, 0);                                
-                                DxInput.SendKey(Interceptor.Keys.F);
+                                this.buttonLoc = new Rectangle(this.startX + results.First().Rectangle.Left, this.startY + results.First().Rectangle.Top, 0, 0);                                                                
+                                Program.config.actions[ButtonAction.ActionBtn].TakeActions();
                                 this.state = GameState.Fishing;
 
                                 Console.WriteLine("F button found");
@@ -94,7 +94,7 @@ namespace ImageCompare.Classes.Skills
                             {
                                 Console.WriteLine($"F button found in previous loc {results.First().Similarity}");
 
-                                DxInput.SendKey(Interceptor.Keys.F);
+                                Program.config.actions[ButtonAction.ActionBtn].TakeActions();
                                 this.state = GameState.Fishing;
                             }
                         }
@@ -148,7 +148,7 @@ namespace ImageCompare.Classes.Skills
                                         if ( !bobberFound )
                                         {
                                             Console.WriteLine($"Spam F!" );
-                                            DxInput.SendKey(Interceptor.Keys.F);
+                                            Program.config.actions[ButtonAction.ActionBtn].TakeActions();
                                             Thread.Sleep(250);
                                         }
                                         bobberFound = false;

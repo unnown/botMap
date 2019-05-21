@@ -50,35 +50,35 @@ namespace ImageCompare.Classes.Skills
            switch (this.state)
             {
                 case GameState.GoHome:
-                    Console.WriteLine("Sending home command");
-                    DxInput.SendKey(Interceptor.Keys.N);
+                    Console.WriteLine("Sending home command");                    
+                    Program.config.actions[ButtonAction.Home].TakeActions();
                     this.state = GameState.Confirm;
                     Thread.Sleep(200);
                     break;
 
                 case GameState.Confirm:
-                    DxInput.SendKey(Interceptor.Keys.Enter);
+                    Program.config.actions[ButtonAction.Confirm].TakeActions();
                     this.state = GameState.BuildMode;
                     Thread.Sleep(200);
                     break;
 
                 case GameState.BuildMode:
                     Thread.Sleep(10000);
-                    DxInput.SendKey(Interceptor.Keys.B);
+                    Program.config.actions[ButtonAction.BuildMode].TakeActions();
                     this.state = GameState.Loop1;
                     break;
 
                 case GameState.Loop1:
                     Thread.Sleep(200);
-                    DxInput.SendKey(Interceptor.Keys.Space);
+                    Program.config.actions[ButtonAction.Space].TakeActions();
                     this.state = GameState.Loop2;
                     break;
 
                 case GameState.Loop2:
                     Thread.Sleep(200);
-                    DxInput.input.SendMouseEvent(Interceptor.MouseState.RightDown);
+                    Program.config.actions[ButtonAction.RightClick].DownAction();                    
                     Thread.Sleep(rand.Next(10, 20));
-                    DxInput.input.SendMouseEvent(Interceptor.MouseState.RightUp);
+                    Program.config.actions[ButtonAction.RightClick].UpAction();
 
                     count += 1;
                     if (count >= buildCount)
@@ -93,13 +93,13 @@ namespace ImageCompare.Classes.Skills
 
                 case GameState.Exit:
                     Console.WriteLine("Ending home command");
-                    DxInput.SendKey(Interceptor.Keys.N);
+                    Program.config.actions[ButtonAction.Home].TakeActions();
                     this.state = GameState.ConfirmStop;
                     Thread.Sleep(200);
                     break;
 
                 case GameState.ConfirmStop:
-                    DxInput.SendKey(Interceptor.Keys.Enter);
+                    Program.config.actions[ButtonAction.Confirm].TakeActions();
                     Program.paused = true;
                     Program.askMode();
                     break;

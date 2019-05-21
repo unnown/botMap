@@ -27,8 +27,8 @@ namespace ImageCompare.Classes.Skills
         public override void takeAction() {
             if ( this.lastHealTick < DateTime.Now.Ticks )
             {
-                DxInput.SendKey(Interceptor.Keys.One);
-                DxInput.SendKey(Interceptor.Keys.Two);
+                Program.config.actions[ButtonAction.HealLeaf].TakeActions();
+                Program.config.actions[ButtonAction.HealPotion].TakeActions();
                 this.lastHealTick = DateTime.Now.AddMinutes(10).Ticks;
             }
 
@@ -37,16 +37,16 @@ namespace ImageCompare.Classes.Skills
                 if (this.down)
                 {
                     Console.WriteLine("Ending loop");
-                    DxInput.SendMouseEvent(Interceptor.MouseState.RightExtraUp);
+                    Program.config.actions[ButtonAction.MainAttack].UpAction();
                     this.down = false;
 
                     Thread.Sleep(200);
-                    DxInput.SendKey(Interceptor.Keys.Control);
+                    Program.config.actions[ButtonAction.BasicAttack].TakeActions();
                     this.lastShootTick = DateTime.Now.AddSeconds(1).Ticks;
                 } else {
                     Console.Clear();
                     Console.WriteLine("Starting new loop");
-                    DxInput.SendMouseEvent(Interceptor.MouseState.RightExtraDown);
+                    Program.config.actions[ButtonAction.MainAttack].DownAction();
                     this.down = true;
                     this.lastShootTick = DateTime.Now.AddSeconds(10).Ticks;
                 }

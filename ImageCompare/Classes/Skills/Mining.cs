@@ -32,7 +32,7 @@ namespace ImageCompare.Classes.Skills
                 if ( results != null && results.Length > 0 )
                 {
                     Console.WriteLine($"Found high {results.First().Similarity}");
-                    DxInput.SendKey(Interceptor.Keys.F);
+                    Program.config.actions[ButtonAction.ActionBtn].TakeActions();
                 }
             }
         }

@@ -22,6 +22,7 @@ namespace ImageCompare
         private static BaseSkill currSkill = null;
         private static List<long> avgTicks = new List<long>();
 
+        public static Config config = new Config();
         public static bool scheduleScreenshot = false;
         public static BaseSkill.Mode mode = BaseSkill.Mode.None;
         public static bool paused = true;

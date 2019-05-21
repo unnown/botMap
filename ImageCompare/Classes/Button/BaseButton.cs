@@ -7,11 +7,15 @@ namespace ImageCompare.Classes.Button
 {
     public class BaseButton
     {
-        public virtual void downAction() { }
+        public virtual void DownAction() { }
 
-        public virtual void duringAction() { }
+        public virtual void UpAction() { }
 
-        public virtual void upAction() { }
+        public void TakeActions()
+        {
+            this.DownAction();
 
+            this.UpAction();
+        }
     }
 }
