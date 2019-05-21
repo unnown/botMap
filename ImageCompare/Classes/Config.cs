@@ -32,7 +32,6 @@ namespace ImageCompare.Classes
         {
             "HealLeaf: Keys.One",
             "HealPotion: Keys.Two",
-            "",
             "BasicAttack: Keys.Control",
             "MainAttack: Mouse.RightExtraDown; Mouse.RightExtraUp",
             "",
@@ -40,7 +39,7 @@ namespace ImageCompare.Classes
             "Confirm: Keys.Enter",
             "BuildMode: Keys.B",
             "Space: Keys.Space",
-            "RightClick: Mouse.RightDown;Mouse.RightUp",
+            "RightClick: Mouse.RightDown; Mouse.RightUp",
             "",
             "LureItem: Keys.Six",
             "ActionBtn: Keys.F"
